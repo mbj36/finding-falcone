@@ -3,7 +3,7 @@
         <v-toolbar-side-icon color="white"></v-toolbar-side-icon>
 
         <v-toolbar-title>
-            <router-link to="/" class="white--text text-center">Geek trust</router-link>
+            <router-link to="/" class="white--text text-center">Finding Falcone</router-link>
         </v-toolbar-title>
 
         <v-spacer></v-spacer>
