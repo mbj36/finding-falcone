@@ -1,50 +1,59 @@
 <template>
     <div>
-        <h1 class="__header_title">Finding Falcone!</h1>
-        <h2 class="__select_planet">Select planets you want to search in - </h2>
+        <span v-if="!success">
+            <h1 class="__header_title">Finding Falcone!</h1>
+            <h2 class="__select_planet">Select planets you want to search in - </h2>
 
-        <v-flex d-flex sm7 mt-5 class="__select_destination">
-            <v-select :items="items" @change="selectDestination1" label="Select Destination 1" outline></v-select>
-            <v-select :items="items" @change="selectDestination2" label="Select Destination 2" outline></v-select>
-            <v-select :items="items" @change="selectDestination3" label="Select Destination 3" outline></v-select>
-            <v-select :items="items" @change="selectDestination4" label="Select Destination 4" outline></v-select>
-        </v-flex>
-
-        <!--- LIST OF VEHICLES -->
-        <v-flex d-flex sm7 class="__vehicles_list">
-            <!--- 1st DESTINATION -->
-            <v-flex mt-3>
-                <v-radio-group v-model="radioGroup" v-show="showFirstDestinationVehicles">
-                    <v-radio v-for="(vehicle, index) in vehicles" :key="index" :label="vehicle.name" :value="vehicle.name"></v-radio>
-                </v-radio-group>
+            <v-flex d-flex sm7 mt-5 class="__select_destination">
+                <v-select :items="items" @change="selectDestination1" label="Select Destination 1" outline></v-select>
+                <v-select :items="items" @change="selectDestination2" label="Select Destination 2" outline></v-select>
+                <v-select :items="items" @change="selectDestination3" label="Select Destination 3" outline></v-select>
+                <v-select :items="items" @change="selectDestination4" label="Select Destination 4" outline></v-select>
             </v-flex>
 
-            <!-- 2nd Destination -->
-            <v-flex mt-3>
-                <v-radio-group v-model="radioGroup" v-show="showSecondDestinationVehicles">
-                    <v-radio v-for="(vehicle, index) in vehicles" :key="index" :label="vehicle.name" :value="vehicle.name"></v-radio>
-                </v-radio-group>
+            <!--- LIST OF VEHICLES -->
+            <v-flex d-flex sm7 class="__vehicles_list">
+                <!--- 1st DESTINATION -->
+                <v-flex mt-3>
+
+                    <v-radio-group v-model="radioFirst" v-show="showFirstDestinationVehicles">
+                        <v-radio v-for="(vehicle, index) in vehicles" :key="index" :label="vehicle.name" :value="vehicle.name"></v-radio>
+                    </v-radio-group>
+
+                </v-flex>
+
+                <!-- 2nd Destination -->
+                <v-flex mt-3>
+                    <v-radio-group v-model="radioSecond" v-show="showSecondDestinationVehicles">
+                        <v-radio v-for="(vehicle, index) in vehicles" :key="index" :label="vehicle.name" :value="vehicle.name"></v-radio>
+                    </v-radio-group>
+                </v-flex>
+
+                <!-- 3rd Destination -->
+                <v-flex mt-3>
+                    <v-radio-group v-model="radioThird" v-show="showThirdDestinationVehicles">
+                        <v-radio v-for="(vehicle, index) in vehicles" :key="index" :label="vehicle.name" :value="vehicle.name"></v-radio>
+                    </v-radio-group>
+                </v-flex>
+
+                <!-- 4th Destination -->
+
+                <v-flex mt-3>
+                    <v-radio-group v-model="radioFourth" v-show="showFourthDestinationVehicles">
+                        <v-radio v-for="(vehicle, index) in vehicles" :key="index" :label="vehicle.name" :value="vehicle.name"></v-radio>
+                    </v-radio-group>
+                </v-flex>
             </v-flex>
 
-            <!-- 3rd Destination -->
-            <v-flex mt-3>
-                <v-radio-group v-model="radioGroup" v-show="showThirdDestinationVehicles">
-                    <v-radio v-for="(vehicle, index) in vehicles" :key="index" :label="vehicle.name" :value="vehicle.name"></v-radio>
-                </v-radio-group>
-            </v-flex>
-
-            <!-- 4th Destination -->
-
-            <v-flex mt-3>
-                <v-radio-group v-model="radioGroup" v-show="showFourthDestinationVehicles">
-                    <v-radio v-for="(vehicle, index) in vehicles" :key="index" :label="vehicle.name" :value="vehicle.name"></v-radio>
-                </v-radio-group>
-            </v-flex>
-        </v-flex>
-
-        <div class="__find_falcon ">
-            <v-btn>Find Falcon</v-btn>
-        </div>
+            <div class="__find_falcon ">
+                <v-btn @click="findFalcon">Find Falcon</v-btn>
+            </div>
+        </span>
+        <span v-else>
+            <div class="__result">
+                Success! Congratulations on Finding Falcone Planet Name - {{result.planet_name}}
+            </div>
+        </span>
     </div>
 </template>
 
@@ -55,8 +64,15 @@
           items: [],
           vehicles: [],
           token: null,
+          result: null,
+          success: false,
+          planet_names: [],
           selected_planet_names: [],
           selected_vehicle_names: [],
+          radioFirst: [],
+          radioSecond: [],
+          radioThird: [],
+          radioFourth: [],
           showFirstDestinationVehicles: false,
           showSecondDestinationVehicles: false,
           showThirdDestinationVehicles: false,
@@ -73,6 +89,7 @@
       methods: {
         getPlanets() {
           this.$http.get('https://findfalcone.herokuapp.com/planets').then(res => {
+            this.planet_names = res.data;
             this.items = res.data.map(data => data.name);
           });
         },
@@ -100,14 +117,32 @@
         },
 
         findFalcon() {
+          this.selected_vehicle_names = [
+            this.radioFirst,
+            this.radioSecond,
+            this.radioThird,
+            this.radioFourth
+          ];
           this.$http
-            .post('https://findfalcone.herokuapp.com/find', {
-              token: this.token,
-              planet_names: this.selected_planet_names,
-              vehicle_names: this.selected_vehicle_names
-            })
+            .post(
+              'https://findfalcone.herokuapp.com/find',
+              {
+                token: this.token,
+                planet_names: this.selected_planet_names,
+                vehicle_names: this.selected_vehicle_names
+              },
+              {
+                headers: {
+                  Accept: 'application/json',
+                  'Content-Type': 'application/json'
+                }
+              }
+            )
             .then(res => {
-              alert('Thanks');
+              this.result = res.data;
+              this.success = true;
+              this.selected_planet_names = [];
+              this.selected_vehicle_names = [];
             });
         },
         selectDestination1(a) {
@@ -161,5 +196,10 @@
     .__vehicles_list {
       margin-left: 23%;
       margin-right: 20%;
+    }
+    .__result {
+      font-size: 24px;
+      text-align: center;
+      margin-top: 20%;
     }
 </style>
