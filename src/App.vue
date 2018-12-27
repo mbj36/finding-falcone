@@ -2,6 +2,7 @@
     <v-app>
         <Header/>
         <div id="app">
+            <!-- View -->
             <router-view/>
         </div>
         <Footer/>
@@ -9,8 +10,8 @@
 </template>
 
 <script>
-    import Header from './components/Header';
-    import Footer from './components/Footer';
+    import Header from './components/Header'; // Header Component
+    import Footer from './components/Footer'; // Footer Component
     export default {
       name: 'app',
       components: {
@@ -26,6 +27,6 @@
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
       color: #2c3e50;
-      min-height: 500px;
+      min-height: 90%;
     }
 </style>

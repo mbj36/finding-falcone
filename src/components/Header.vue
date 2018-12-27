@@ -1,5 +1,5 @@
 <template>
-    <v-toolbar dense color="deep-purple darken-4">
+    <v-toolbar color="deep-purple darken-4">
         <v-toolbar-side-icon color="white"></v-toolbar-side-icon>
 
         <v-toolbar-title>
