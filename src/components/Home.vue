@@ -2,32 +2,33 @@
     <div>
         <h1 class="__header_title">Finding Falcone!</h1>
         <h2 class="__select_planet">Select planets you want to search in - </h2>
-        <v-flex d-flex sm7 mt-4 class="__select_destination">
-            <v-select :items="items" label="Select Destination 1" outline></v-select>
-            <v-select :items="items" label="Select Destination 2" outline></v-select>
-            <v-select :items="items" label="Select Destination 3" outline></v-select>
-            <v-select :items="items" label="Select Destination 4" outline></v-select>
+
+        <v-flex d-flex sm7 mt-5 class="__select_destination">
+            <v-select :items="items" @change="selectDestination1" label="Select Destination 1" outline></v-select>
+            <v-select :items="items" @change="selectDestination2" label="Select Destination 2" outline></v-select>
+            <v-select :items="items" @change="selectDestination3" label="Select Destination 3" outline></v-select>
+            <v-select :items="items" @change="selectDestination4" label="Select Destination 4" outline></v-select>
         </v-flex>
 
         <!--- LIST OF VEHICLES -->
         <v-flex d-flex sm7 class="__vehicles_list">
             <!--- 1st DESTINATION -->
             <v-flex mt-3>
-                <v-radio-group v-model="radioGroup">
+                <v-radio-group v-model="radioGroup" v-show="showFirstDestinationVehicles">
                     <v-radio v-for="(vehicle, index) in vehicles" :key="index" :label="vehicle.name" :value="vehicle.name"></v-radio>
                 </v-radio-group>
             </v-flex>
 
             <!-- 2nd Destination -->
             <v-flex mt-3>
-                <v-radio-group v-model="radioGroup">
+                <v-radio-group v-model="radioGroup" v-show="showSecondDestinationVehicles">
                     <v-radio v-for="(vehicle, index) in vehicles" :key="index" :label="vehicle.name" :value="vehicle.name"></v-radio>
                 </v-radio-group>
             </v-flex>
 
             <!-- 3rd Destination -->
             <v-flex mt-3>
-                <v-radio-group v-model="radioGroup">
+                <v-radio-group v-model="radioGroup" v-show="showThirdDestinationVehicles">
                     <v-radio v-for="(vehicle, index) in vehicles" :key="index" :label="vehicle.name" :value="vehicle.name"></v-radio>
                 </v-radio-group>
             </v-flex>
@@ -35,7 +36,7 @@
             <!-- 4th Destination -->
 
             <v-flex mt-3>
-                <v-radio-group v-model="radioGroup">
+                <v-radio-group v-model="radioGroup" v-show="showFourthDestinationVehicles">
                     <v-radio v-for="(vehicle, index) in vehicles" :key="index" :label="vehicle.name" :value="vehicle.name"></v-radio>
                 </v-radio-group>
             </v-flex>
@@ -55,7 +56,11 @@
           vehicles: [],
           token: null,
           selected_planet_names: [],
-          selected_vehicle_names: []
+          selected_vehicle_names: [],
+          showFirstDestinationVehicles: false,
+          showSecondDestinationVehicles: false,
+          showThirdDestinationVehicles: false,
+          showFourthDestinationVehicles: false
         };
       },
 
@@ -104,6 +109,22 @@
             .then(res => {
               alert('Thanks');
             });
+        },
+        selectDestination1(a) {
+          this.selected_planet_names.push(a);
+          this.showFirstDestinationVehicles = true;
+        },
+        selectDestination2(a) {
+          this.selected_planet_names.push(a);
+          this.showSecondDestinationVehicles = true;
+        },
+        selectDestination3(a) {
+          this.selected_planet_names.push(a);
+          this.showThirdDestinationVehicles = true;
+        },
+        selectDestination4(a) {
+          this.selected_planet_names.push(a);
+          this.showFourthDestinationVehicles = true;
         }
       },
       computed: {
@@ -134,10 +155,11 @@
       margin-left: 2% !important;
     }
     .__find_falcon {
-      margin-top: 10%;
+      margin-top: 5%;
       text-align: center;
     }
     .__vehicles_list {
       margin-left: 23%;
+      margin-right: 20%;
     }
 </style>
