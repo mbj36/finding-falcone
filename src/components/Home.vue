@@ -2,13 +2,46 @@
     <div>
         <h1 class="__header_title">Finding Falcone!</h1>
         <h2 class="__select_planet">Select planets you want to search in - </h2>
-        <v-flex d-flex xs12 sm7 mt-5 class="__select_destination">
+        <v-flex d-flex sm7 mt-4 class="__select_destination">
             <v-select :items="items" label="Select Destination 1" outline></v-select>
             <v-select :items="items" label="Select Destination 2" outline></v-select>
             <v-select :items="items" label="Select Destination 3" outline></v-select>
             <v-select :items="items" label="Select Destination 4" outline></v-select>
         </v-flex>
-        <div class="__find_falcon">
+
+        <!--- LIST OF VEHICLES -->
+        <v-flex d-flex sm7 class="__vehicles_list">
+            <!--- 1st DESTINATION -->
+            <v-flex mt-3>
+                <v-radio-group v-model="radioGroup">
+                    <v-radio v-for="(vehicle, index) in vehicles" :key="index" :label="vehicle.name" :value="vehicle.name"></v-radio>
+                </v-radio-group>
+            </v-flex>
+
+            <!-- 2nd Destination -->
+            <v-flex mt-3>
+                <v-radio-group v-model="radioGroup">
+                    <v-radio v-for="(vehicle, index) in vehicles" :key="index" :label="vehicle.name" :value="vehicle.name"></v-radio>
+                </v-radio-group>
+            </v-flex>
+
+            <!-- 3rd Destination -->
+            <v-flex mt-3>
+                <v-radio-group v-model="radioGroup">
+                    <v-radio v-for="(vehicle, index) in vehicles" :key="index" :label="vehicle.name" :value="vehicle.name"></v-radio>
+                </v-radio-group>
+            </v-flex>
+
+            <!-- 4th Destination -->
+
+            <v-flex mt-3>
+                <v-radio-group v-model="radioGroup">
+                    <v-radio v-for="(vehicle, index) in vehicles" :key="index" :label="vehicle.name" :value="vehicle.name"></v-radio>
+                </v-radio-group>
+            </v-flex>
+        </v-flex>
+
+        <div class="__find_falcon ">
             <v-btn>Find Falcon</v-btn>
         </div>
     </div>
@@ -28,6 +61,7 @@
 
       mounted() {
         this.getPlanets();
+        this.getVehicles();
         this.getToken();
       },
 
@@ -102,5 +136,8 @@
     .__find_falcon {
       margin-top: 10%;
       text-align: center;
+    }
+    .__vehicles_list {
+      margin-left: 23%;
     }
 </style>
