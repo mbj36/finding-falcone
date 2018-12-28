@@ -39,14 +39,14 @@
         <!-- 2nd Destination -->
         <v-flex mt-3>
           <v-radio-group v-model="radioSecond" v-show="showSecondDestinationVehicles">
-            <v-radio v-for="(vehicle, index) in vehicles" :key="index" :label="vehicle.name" :value="vehicle.name"></v-radio>
+            <v-radio v-for="(vehicle, index) in vehicles" :key="index" :label="`${vehicle.name} (${vehicle.total_no})`" :value="vehicle.name"></v-radio>
           </v-radio-group>
         </v-flex>
 
         <!-- 3rd Destination -->
         <v-flex mt-3>
           <v-radio-group v-model="radioThird" v-show="showThirdDestinationVehicles">
-            <v-radio v-for="(vehicle, index) in vehicles" :key="index" :label="vehicle.name" :value="vehicle.name"></v-radio>
+            <v-radio v-for="(vehicle, index) in vehicles" :key="index" :label="`${vehicle.name} (${vehicle.total_no})`" :value="vehicle.name"></v-radio>
           </v-radio-group>
         </v-flex>
 
@@ -54,7 +54,7 @@
 
         <v-flex mt-3>
           <v-radio-group v-model="radioFourth" v-show="showFourthDestinationVehicles">
-            <v-radio v-for="(vehicle, index) in vehicles" :key="index" :label="vehicle.name" :value="vehicle.name"></v-radio>
+            <v-radio v-for="(vehicle, index) in vehicles" :key="index" :label="`${vehicle.name} (${vehicle.total_no})`" :value="vehicle.name"></v-radio>
           </v-radio-group>
         </v-flex>
       </v-flex>
@@ -181,19 +181,27 @@
           });
       },
       selectDestination1(a) {
-        this.selected_planet_names.push(a);
+        this.selected_planet_names.includes(a)
+          ? null
+          : this.selected_planet_names.push(a);
         this.showFirstDestinationVehicles = true;
       },
       selectDestination2(a) {
-        this.selected_planet_names.push(a);
+        this.selected_planet_names.includes(a)
+          ? null
+          : this.selected_planet_names.push(a);
         this.showSecondDestinationVehicles = true;
       },
       selectDestination3(a) {
-        this.selected_planet_names.push(a);
+        this.selected_planet_names.includes(a)
+          ? null
+          : this.selected_planet_names.push(a);
         this.showThirdDestinationVehicles = true;
       },
       selectDestination4(a) {
-        this.selected_planet_names.push(a);
+        this.selected_planet_names.includes(a)
+          ? null
+          : this.selected_planet_names.push(a);
         this.showFourthDestinationVehicles = true;
       },
       startAgain() {
