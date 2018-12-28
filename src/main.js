@@ -12,6 +12,8 @@ Vue.config.productionTip = false;
 
 Vue.prototype.$http = Axios; //Registering the Axios globally to use like this.$http
 
+Vue.prototype.$http.defaults.baseURL = 'https://findfalcone.herokuapp.com';
+
 new Vue({
   render: h => h(App),
   router

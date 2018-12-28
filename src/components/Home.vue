@@ -7,6 +7,12 @@
       </v-alert>
     </span>
 
+    <span v-if="status === 'false'">
+      <v-alert dismissible :value="true" type="error">
+        Not Successful, Please try again in finding falcone
+      </v-alert>
+    </span>
+
     <span v-if="!success">
       <h1 class="__header_title">Finding Falcone!</h1>
       <h2 class="__select_planet">Select planets you want to search in - </h2>
@@ -96,6 +102,7 @@
         dest3: null,
         dest4: null
       },
+      status: true,
       show: true,
       result: null,
       success: false,
@@ -130,14 +137,14 @@
 
     methods: {
       getPlanets() {
-        this.$http.get('https://findfalcone.herokuapp.com/planets').then(res => {
+        this.$http.get('/planets').then(res => {
           this.planet_names = res.data;
           this.items = res.data.map(data => data.name);
         });
       },
 
       getVehicles() {
-        this.$http.get('https://findfalcone.herokuapp.com/vehicles').then(res => {
+        this.$http.get('/vehicles').then(res => {
           this.vehicles = res.data;
         });
       },
@@ -145,7 +152,7 @@
       getToken() {
         this.$http
           .post(
-            'https://findfalcone.herokuapp.com/token',
+            '/token',
             {},
             {
               headers: {
@@ -167,7 +174,7 @@
         ];
         this.$http
           .post(
-            'https://findfalcone.herokuapp.com/find',
+            '/find',
             {
               token: this.token,
               planet_names: this.selected_planet_names,
@@ -182,41 +189,50 @@
           )
           .then(res => {
             this.result = res.data;
-            this.success = true;
-            this.selected_planet_names = [];
-            this.selected_vehicle_names = [];
+            this.status = res.data.status;
+            if (res.data.status !== 'false') {
+              this.success = true;
+              this.selected_planet_names = [];
+              this.selected_vehicle_names = [];
+            }
           })
           .catch(error => {
             this.error = error.response.data.error;
           });
       },
+
       selectDestination1(a) {
         this.selected_planet_names.includes(a)
           ? null
           : this.selected_planet_names.push(a);
         this.showFirstDestinationVehicles = true;
       },
+
       selectDestination2(a) {
         this.selected_planet_names.includes(a)
           ? null
           : this.selected_planet_names.push(a);
         this.showSecondDestinationVehicles = true;
       },
+
       selectDestination3(a) {
         this.selected_planet_names.includes(a)
           ? null
           : this.selected_planet_names.push(a);
         this.showThirdDestinationVehicles = true;
       },
+
       selectDestination4(a) {
         this.selected_planet_names.includes(a)
           ? null
           : this.selected_planet_names.push(a);
         this.showFourthDestinationVehicles = true;
       },
+
       startAgain() {
         this.resetData();
       },
+
       resetData() {
         Object.assign(this.$data, initialState());
         this.getPlanets();
@@ -228,6 +244,7 @@
         });
       }
     },
+
     computed: {
       getPlanetName() {
         return this.items;
