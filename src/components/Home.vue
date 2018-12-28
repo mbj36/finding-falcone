@@ -62,7 +62,14 @@
     </span>
     <span v-else>
       <div class="__result">
-        Success! Congratulations on Finding Falcone Planet Name - {{result.planet_name}}
+        Success! Congratulations on Finding Falcone.King Shan is mighty pleased.
+
+        <br/>
+        <span> Planet Name -
+          <b>{{result.planet_name}}</b>
+        </span>
+        <br/>
+        <v-btn class="mt-4" @click="startAgain">Start Again</v-btn>
       </div>
     </span>
   </div>
@@ -181,6 +188,9 @@
       selectDestination4(a) {
         this.selected_planet_names.push(a);
         this.showFourthDestinationVehicles = true;
+      },
+      startAgain() {
+        this.success = false;
       }
     },
     computed: {
