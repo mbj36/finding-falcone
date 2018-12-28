@@ -1,7 +1,7 @@
 <template>
   <div>
     <span v-if="error">
-      <v-alert dismissible="" :value="true" type="error">
+      <v-alert dismissible :value="true" type="error">
         {{error}}
       </v-alert>
     </span>
@@ -10,10 +10,16 @@
       <h2 class="__select_planet">Select planets you want to search in - </h2>
 
       <v-flex d-flex sm7 mt-5 class="__select_destination">
-        <v-select :items="items" @change="selectDestination1" label="Select Destination 1" outline></v-select>
-        <v-select :items="items" @change="selectDestination2" label="Select Destination 2" outline></v-select>
-        <v-select :items="items" @change="selectDestination3" label="Select Destination 3" outline></v-select>
-        <v-select :items="items" @change="selectDestination4" label="Select Destination 4" outline></v-select>
+
+        <v-autocomplete :items="items" hide-selected flat :search-input.sync="search.dest1" @change="selectDestination1" label="Select Destination 1" outline>
+        </v-autocomplete>
+
+        <v-autocomplete :items="items" hide-selected flat :search-input.sync="search.dest2" @change="selectDestination2" label="Select Destination 2" outline></v-autocomplete>
+
+        <v-autocomplete :items="items" hide-selected flat :search-input.sync="search.dest3" @change="selectDestination3" label="Select Destination 3" outline></v-autocomplete>
+
+        <v-autocomplete :items="items" hide-selected flat :search-input.sync="search.dest4" @change="selectDestination4" label="Select Destination 4" outline></v-autocomplete>
+
       </v-flex>
 
       <!--- LIST OF VEHICLES -->
@@ -51,7 +57,7 @@
       </v-flex>
 
       <div class="__find_falcon ">
-        <v-btn @click="findFalcon">Find Falcon</v-btn>
+        <v-btn @click="findFalcon" dark>Find Falcon</v-btn>
       </div>
     </span>
     <span v-else>
@@ -69,6 +75,12 @@
         items: [],
         vehicles: [],
         token: null,
+        search: {
+          dest1: null,
+          dest2: null,
+          dest3: null,
+          dest4: null
+        },
         result: null,
         success: false,
         planet_names: [],
