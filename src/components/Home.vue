@@ -1,10 +1,12 @@
 <template>
   <div>
+
     <span v-if="error">
       <v-alert dismissible :value="true" type="error">
         {{error}}
       </v-alert>
     </span>
+
     <span v-if="!success">
       <h1 class="__header_title">Finding Falcone!</h1>
       <h2 class="__select_planet">Select planets you want to search in - </h2>
@@ -24,11 +26,12 @@
 
       <!--- LIST OF VEHICLES -->
       <v-flex d-flex sm7 class="__vehicles_list">
+
         <!--- 1st DESTINATION -->
         <v-flex mt-3>
 
           <v-radio-group v-model="radioFirst" v-show="showFirstDestinationVehicles">
-            <v-radio v-for="(vehicle, index) in vehicles" :key="index" :label="vehicle.name" :value="vehicle.name"></v-radio>
+            <v-radio v-for="(vehicle, index) in vehicles" :key="index" :label="`${vehicle.name} (${vehicle.total_no})`" :value="vehicle.name"></v-radio>
           </v-radio-group>
 
         </v-flex>
@@ -60,6 +63,9 @@
         <v-btn @click="findFalcon" dark>Find Falcon</v-btn>
       </div>
     </span>
+
+    <!-- Success page -->
+
     <span v-else>
       <div class="__result">
         Success! Congratulations on Finding Falcone.King Shan is mighty pleased.
@@ -72,6 +78,7 @@
         <v-btn class="mt-4" @click="startAgain">Start Again</v-btn>
       </div>
     </span>
+
   </div>
 </template>
 
