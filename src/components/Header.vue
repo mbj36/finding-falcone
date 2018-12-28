@@ -11,9 +11,6 @@
             <v-btn flat>
                 <router-link class="white--text" to="/">Home</router-link>
             </v-btn>
-            <v-btn flat>
-                <router-link class="white--text" to="/">Reset</router-link>
-            </v-btn>
         </v-toolbar-items>
     </v-toolbar>
 </template>

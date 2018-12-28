@@ -11,7 +11,7 @@
       <h1 class="__header_title">Finding Falcone!</h1>
       <h2 class="__select_planet">Select planets you want to search in - </h2>
 
-      <v-flex d-flex sm7 mt-5 class="__select_destination">
+      <v-flex d-flex sm7 mt-5 class="__select_destination" v-if="show">
 
         <v-autocomplete :items="items" hide-selected flat :search-input.sync="search.dest1" @change="selectDestination1" label="Select Destination 1" outline>
         </v-autocomplete>
@@ -60,8 +60,10 @@
       </v-flex>
 
       <div class="__find_falcon ">
-        <v-btn @click="findFalcon" dark>Find Falcon</v-btn>
+        <v-btn @click="findFalcon" v-show="selected_planet_names.length > 3" dark>Find Falcon</v-btn>
+        <v-btn @click="resetData">Reset</v-btn>
       </div>
+
     </span>
 
     <!-- Success page -->
@@ -83,38 +85,46 @@
 </template>
 
 <script>
+  function initialState() {
+    return {
+      items: [],
+      vehicles: [],
+      token: null,
+      search: {
+        dest1: null,
+        dest2: null,
+        dest3: null,
+        dest4: null
+      },
+      show: true,
+      result: null,
+      success: false,
+      planet_names: [],
+      selected_planet_names: [],
+      selected_vehicle_names: [],
+      radioFirst: null,
+      radioSecond: null,
+      radioThird: null,
+      radioFourth: null,
+      showFirstDestinationVehicles: false,
+      showSecondDestinationVehicles: false,
+      showThirdDestinationVehicles: false,
+      showFourthDestinationVehicles: false,
+      error: null
+    };
+  }
+
   export default {
     data() {
-      return {
-        items: [],
-        vehicles: [],
-        token: null,
-        search: {
-          dest1: null,
-          dest2: null,
-          dest3: null,
-          dest4: null
-        },
-        result: null,
-        success: false,
-        planet_names: [],
-        selected_planet_names: [],
-        selected_vehicle_names: [],
-        radioFirst: null,
-        radioSecond: null,
-        radioThird: null,
-        radioFourth: null,
-        showFirstDestinationVehicles: false,
-        showSecondDestinationVehicles: false,
-        showThirdDestinationVehicles: false,
-        showFourthDestinationVehicles: false,
-        error: null
-      };
+      return initialState();
     },
 
     mounted() {
       this.getPlanets();
       this.getVehicles();
+    },
+
+    created() {
       this.getToken();
     },
 
@@ -205,7 +215,17 @@
         this.showFourthDestinationVehicles = true;
       },
       startAgain() {
-        this.success = false;
+        this.resetData();
+      },
+      resetData() {
+        Object.assign(this.$data, initialState());
+        this.getPlanets();
+        this.getVehicles();
+        this.getToken();
+        this.show = false;
+        this.$nextTick(() => {
+          this.show = true;
+        });
       }
     },
     computed: {
