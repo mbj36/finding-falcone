@@ -9,7 +9,7 @@
 
         <span v-if="status === 'false'">
             <v-alert dismissible :value="true" type="error">
-                Not Successful, Please try again in finding falcone
+                Not Successful, Please reset and try again in finding falcone
             </v-alert>
         </span>
 
@@ -38,7 +38,7 @@
 
                             <v-radio-group v-model="form.radio[index]" v-show="index < selected_planet_names.length">
 
-                                <v-radio v-for="(vehicle, index) in vehicles" :key="index" :label="`${vehicle.name} (${vehicle.total_no})`" :value="vehicle.name" :disabled="vehicle.max_distance < planet_name.distance"></v-radio>
+                                <v-radio v-for="(vehicle, index) in vehicles" :key="index" @change="timeTaken(vehicle.max_distance, vehicle.speed)" :label="`${vehicle.name} (${vehicle.total_no})`" :value="vehicle.name" :disabled="vehicle.max_distance < planet_name.distance"></v-radio>
 
                             </v-radio-group>
 
@@ -90,7 +90,8 @@
           dest3: null,
           dest4: null
         },
-        status: true,
+        current_selected_planet: null,
+        status: true, // API response status
         show: true,
         result: null,
         success: false,
@@ -100,9 +101,9 @@
         form: {
           radio: []
         },
-        loader: true,
-        error: null,
-        prevIndex: ''
+        loader: true, // initial loader
+        error: null, // to show error message based on conditions
+        prevIndex: '' // used to check before pushing into the selected_items array
       };
     }
 
@@ -121,11 +122,21 @@
       },
 
       methods: {
+        timeTaken(d, s) {
+          this.totalTimeTaken = this.totalTimeTaken + d / s;
+        },
         getPlanets() {
           this.$http.get('/planets').then(res => {
             this.planet_names = res.data;
             this.loader = false;
-            this.items = res.data.map(data => data.name);
+            this.items = res.data
+              .map(data => {
+                return {
+                  text: data.name,
+                  value: data.name
+                };
+              })
+              .filter(data => !data.isSelected);
           });
         },
 
@@ -183,6 +194,18 @@
         },
 
         selectDestination(index, planet) {
+          this.items = this.items.map(item => {
+            if (item.text === planet) {
+              return {
+                text: item.text,
+                value: item.value,
+                disabled: true
+              };
+            } else {
+              return item;
+            }
+          });
+          this.current_selected_planet = planet;
           if (this.prevIndex === index) {
             this.selected_planet_names.splice(-1, 1);
           }
