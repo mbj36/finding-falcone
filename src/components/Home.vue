@@ -1,294 +1,247 @@
 <template>
-  <div>
+    <div>
 
-    <span v-if="error">
-      <v-alert dismissible :value="true" type="error">
-        {{error}}
-      </v-alert>
-    </span>
-
-    <span v-if="status === 'false'">
-      <v-alert dismissible :value="true" type="error">
-        Not Successful, Please try again in finding falcone
-      </v-alert>
-    </span>
-
-    <span v-if="!success">
-      <h1 class="__header_title">Finding Falcone!</h1>
-      <h2 class="__select_planet">Select planets you want to search in - </h2>
-
-      <v-flex d-flex sm7 mt-5 class="__select_destination" v-if="show">
-
-        <v-autocomplete :items="items" hide-selected flat :search-input.sync="search.dest1" @change="selectDestination1" label="Select Destination 1" outline>
-        </v-autocomplete>
-
-        <v-autocomplete :items="items" hide-selected flat :search-input.sync="search.dest2" @change="selectDestination2" label="Select Destination 2" outline></v-autocomplete>
-
-        <v-autocomplete :items="items" hide-selected flat :search-input.sync="search.dest3" @change="selectDestination3" label="Select Destination 3" outline></v-autocomplete>
-
-        <v-autocomplete :items="items" hide-selected flat :search-input.sync="search.dest4" @change="selectDestination4" label="Select Destination 4" outline></v-autocomplete>
-
-      </v-flex>
-
-      <!--- LIST OF VEHICLES -->
-
-      <v-flex class="__vehicles_list">
-
-        <!--- 1st DESTINATION -->
-        <div class="mt-2">
-
-          <v-radio-group v-model="radioFirst">
-            <v-radio v-show="showFirstDestinationVehicles" v-for="(vehicle, index) in vehicles" :key="index" :label="`${vehicle.name} (${vehicle.total_no})`" :value="vehicle.name"></v-radio>
-          </v-radio-group>
-
-        </div>
-
-        <!-- 2nd Destination -->
-        <div class="mt-2">
-          <v-radio-group v-model="radioSecond">
-            <v-radio v-show="showSecondDestinationVehicles" v-for="(vehicle, index) in vehicles" :key="index" :label="`${vehicle.name} (${vehicle.total_no})`" :value="vehicle.name"></v-radio>
-          </v-radio-group>
-        </div>
-
-        <!-- 3rd Destination -->
-        <div class="mt-2">
-          <v-radio-group v-model="radioThird">
-            <v-radio v-show="showThirdDestinationVehicles" v-for="(vehicle, index) in vehicles" :key="index" :label="`${vehicle.name} (${vehicle.total_no})`" :value="vehicle.name"></v-radio>
-          </v-radio-group>
-        </div>
-
-        <!-- 4th Destination -->
-
-        <div class="mt-2">
-          <v-radio-group v-model="radioFourth">
-            <v-radio v-show="showFourthDestinationVehicles" v-for="(vehicle, index) in vehicles" :key="index" :label="`${vehicle.name} (${vehicle.total_no})`" :value="vehicle.name"></v-radio>
-          </v-radio-group>
-        </div>
-
-      </v-flex>
-
-      <div class="__find_falcon ">
-        <v-btn @click="findFalcon" v-show="selected_planet_names.length > 3" dark>Find Falcon</v-btn>
-        <v-btn @click="resetData">Reset</v-btn>
-      </div>
-
-    </span>
-
-    <!-- Success page -->
-
-    <span v-else>
-      <div class="__result">
-        Success! Congratulations on Finding Falcone.King Shan is mighty pleased.
-
-        <br/>
-        <span> Planet Name -
-          <b>{{result.planet_name}}</b>
+        <span v-if="error">
+            <v-alert dismissible :value="true" type="error">
+                {{error}}, please reset and try again
+            </v-alert>
         </span>
-        <br/>
-        <v-btn class="mt-4" @click="startAgain">Start Again</v-btn>
-      </div>
-    </span>
 
-  </div>
+        <span v-if="status === 'false'">
+            <v-alert dismissible :value="true" type="error">
+                Not Successful, Please try again in finding falcone
+            </v-alert>
+        </span>
+
+        <span v-if="!success">
+            <h1 class="__header_title">Finding Falcone!</h1>
+            <h2 class="__select_planet">Select planets you want to search in - </h2>
+
+            <h3 class="text-sm-center mt-3">
+                <b>Time Taken - {{totalTimeTaken}} </b>
+            </h3>
+
+            <div class="text-xs-center mt-5" v-show="loader">
+                <v-progress-circular :size="70" :width="7" indeterminate color="primary"></v-progress-circular>
+            </div>
+
+            <div v-if="show" class="__select_destination mt-4">
+
+                <span v-for="(planet_name, index) in planet_names" :key="index" v-show="index < 4">
+
+                    <v-autocomplete :items="items" flat :search-input.sync="search.dest + `${index+1}`" @change="selectDestination(index + 1, $event)" :label="`Select Destination` +  ` ${index+1}`" outline>
+                    </v-autocomplete>
+
+                    <v-flex class="__vehicles_list">
+
+                        <div class="mt-2">
+
+                            <v-radio-group v-model="form.radio[index]" v-show="index < selected_planet_names.length">
+
+                                <v-radio v-for="(vehicle, index) in vehicles" :key="index" :label="`${vehicle.name} (${vehicle.total_no})`" :value="vehicle.name" :disabled="vehicle.max_distance < planet_name.distance"></v-radio>
+
+                            </v-radio-group>
+
+                        </div>
+
+                    </v-flex>
+                </span>
+
+            </div>
+
+            <div class="__find_falcon ">
+                <v-btn @click="findFalcon" v-show="selected_planet_names.length > 3" dark>Find Falcon</v-btn>
+                <v-btn @click="resetData">Reset</v-btn>
+            </div>
+
+        </span>
+
+        <!-- Success page -->
+
+        <span v-else>
+            <div class="__result">
+                Success! Congratulations on Finding Falcone.King Shan is mighty pleased.
+
+                <br/>
+                <span> Planet Name -
+                    <b>{{result.planet_name}}</b>
+                </span>
+                <span> Time Taken -
+                    <b>{{totalTimeTaken}}</b>
+                </span>
+                <br/>
+                <v-btn class="mt-4" @click="startAgain">Start Again</v-btn>
+            </div>
+        </span>
+
+    </div>
 </template>
 
 <script>
-  function initialState() {
-    return {
-      items: [],
-      vehicles: [],
-      token: null,
-      search: {
-        dest1: null,
-        dest2: null,
-        dest3: null,
-        dest4: null
-      },
-      status: true,
-      show: true,
-      result: null,
-      success: false,
-      planet_names: [],
-      selected_planet_names: [],
-      selected_vehicle_names: [],
-      radioFirst: null,
-      radioSecond: null,
-      radioThird: null,
-      radioFourth: null,
-      showFirstDestinationVehicles: false,
-      showSecondDestinationVehicles: false,
-      showThirdDestinationVehicles: false,
-      showFourthDestinationVehicles: false,
-      error: null
-    };
-  }
+    function initialState() {
+      return {
+        items: [],
+        totalTimeTaken: 0,
+        vehicles: [],
+        token: null,
+        search: {
+          dest1: null,
+          dest2: null,
+          dest3: null,
+          dest4: null
+        },
+        status: true,
+        show: true,
+        result: null,
+        success: false,
+        planet_names: [],
+        selected_planet_names: [],
+        selected_vehicle_names: [],
+        form: {
+          radio: []
+        },
+        loader: true,
+        error: null,
+        prevIndex: ''
+      };
+    }
 
-  export default {
-    data() {
-      return initialState();
-    },
-
-    mounted() {
-      this.getPlanets();
-      this.getVehicles();
-    },
-
-    created() {
-      this.getToken();
-    },
-
-    methods: {
-      getPlanets() {
-        this.$http.get('/planets').then(res => {
-          this.planet_names = res.data;
-          this.items = res.data.map(data => data.name);
-        });
+    export default {
+      data() {
+        return initialState();
       },
 
-      getVehicles() {
-        this.$http.get('/vehicles').then(res => {
-          this.vehicles = res.data;
-        });
-      },
-
-      getToken() {
-        this.$http
-          .post(
-            '/token',
-            {},
-            {
-              headers: {
-                Accept: 'application/json'
-              }
-            }
-          )
-          .then(res => {
-            this.token = res.data.token;
-          });
-      },
-
-      findFalcon() {
-        this.selected_vehicle_names = [
-          this.radioFirst,
-          this.radioSecond,
-          this.radioThird,
-          this.radioFourth
-        ];
-        this.$http
-          .post(
-            '/find',
-            {
-              token: this.token,
-              planet_names: this.selected_planet_names,
-              vehicle_names: this.selected_vehicle_names
-            },
-            {
-              headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json'
-              }
-            }
-          )
-          .then(res => {
-            this.result = res.data;
-            this.status = res.data.status;
-            if (res.data.status !== 'false') {
-              this.success = true;
-              this.selected_planet_names = [];
-              this.selected_vehicle_names = [];
-            }
-          })
-          .catch(error => {
-            this.error = error.response.data.error;
-          });
-      },
-
-      selectDestination1(a) {
-        this.selected_planet_names.includes(a)
-          ? null
-          : this.selected_planet_names.push(a);
-        this.showFirstDestinationVehicles = true;
-      },
-
-      selectDestination2(a) {
-        this.selected_planet_names.includes(a)
-          ? null
-          : this.selected_planet_names.push(a);
-        this.showSecondDestinationVehicles = true;
-      },
-
-      selectDestination3(a) {
-        this.selected_planet_names.includes(a)
-          ? null
-          : this.selected_planet_names.push(a);
-        this.showThirdDestinationVehicles = true;
-      },
-
-      selectDestination4(a) {
-        this.selected_planet_names.includes(a)
-          ? null
-          : this.selected_planet_names.push(a);
-        this.showFourthDestinationVehicles = true;
-      },
-
-      startAgain() {
-        this.resetData();
-      },
-
-      resetData() {
-        Object.assign(this.$data, initialState());
+      mounted() {
         this.getPlanets();
         this.getVehicles();
-        this.getToken();
-        this.show = false;
-        this.$nextTick(() => {
-          this.show = true;
-        });
-      }
-    },
+      },
 
-    computed: {
-      getPlanetName() {
-        return this.items;
+      created() {
+        this.getToken();
+      },
+
+      methods: {
+        getPlanets() {
+          this.$http.get('/planets').then(res => {
+            this.planet_names = res.data;
+            this.loader = false;
+            this.items = res.data.map(data => data.name);
+          });
+        },
+
+        getVehicles() {
+          this.$http.get('/vehicles').then(res => {
+            this.vehicles = res.data;
+          });
+        },
+
+        getToken() {
+          this.$http
+            .post(
+              '/token',
+              {},
+              {
+                headers: {
+                  Accept: 'application/json'
+                }
+              }
+            )
+            .then(res => {
+              this.token = res.data.token;
+            });
+        },
+
+        findFalcon() {
+          this.selected_vehicle_names = this.form.radio;
+          this.$http
+            .post(
+              '/find',
+              {
+                token: this.token,
+                planet_names: this.selected_planet_names,
+                vehicle_names: this.selected_vehicle_names
+              },
+              {
+                headers: {
+                  Accept: 'application/json',
+                  'Content-Type': 'application/json'
+                }
+              }
+            )
+            .then(res => {
+              this.result = res.data;
+              this.status = res.data.status;
+              if (res.data.status !== 'false') {
+                this.success = true;
+                this.selected_planet_names = [];
+                this.selected_vehicle_names = [];
+              }
+            })
+            .catch(error => {
+              this.error = error.response.data.error;
+            });
+        },
+
+        selectDestination(index, planet) {
+          if (this.prevIndex === index) {
+            this.selected_planet_names.splice(-1, 1);
+          }
+          this.prevIndex = index;
+          this.selected_planet_names.includes(planet)
+            ? null
+            : this.selected_planet_names.push(planet);
+        },
+
+        startAgain() {
+          this.resetData();
+        },
+
+        resetData() {
+          Object.assign(this.$data, initialState());
+          this.getPlanets();
+          this.getVehicles();
+          this.getToken();
+          this.show = false;
+          this.$nextTick(() => {
+            this.show = true;
+          });
+        }
       }
-    }
-  };
+    };
 </script>
 
 <style>
-  .__header_title {
-    font-size: 3rem;
-    text-align: center;
-    margin-top: 3rem;
-  }
+    .__header_title {
+      font-size: 3rem;
+      text-align: center;
+      margin-top: 3rem;
+    }
 
-  .__select_planet {
-    text-align: center;
-    margin-top: 1rem;
-  }
+    .__select_planet {
+      text-align: center;
+      margin-top: 1rem;
+    }
 
-  .__select_destination {
-    margin-left: 20%;
-  }
+    .__select_destination {
+      margin-left: 20%;
+      display: inline-flex;
+    }
 
-  .__select_destination > div {
-    margin-left: 2% !important;
-  }
-  .__find_falcon {
-    margin-top: 5%;
-    text-align: center;
-  }
-  .__vehicles_list {
-    margin-left: 19%;
-    display: inline-flex;
-    width: 100%;
-  }
-  .__vehicles_list > div {
-    margin-left: 3%;
-  }
-  .__result {
-    font-size: 24px;
-    text-align: center;
-    margin-top: 20%;
-  }
+    .__select_destination > span {
+      margin-left: 2% !important;
+    }
+    .__find_falcon {
+      margin-top: 3%;
+      text-align: center;
+    }
+    .__vehicles_list {
+      margin-left: 5%;
+      display: inline-flex;
+      width: 100%;
+    }
+    .__result {
+      font-size: 24px;
+      text-align: center;
+      margin-top: 20%;
+    }
 </style>
