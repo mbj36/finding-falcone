@@ -31,38 +31,40 @@
       </v-flex>
 
       <!--- LIST OF VEHICLES -->
-      <v-flex d-flex sm7 class="__vehicles_list">
+
+      <v-flex class="__vehicles_list">
 
         <!--- 1st DESTINATION -->
-        <v-flex mt-3>
+        <div class="mt-2">
 
-          <v-radio-group v-model="radioFirst" v-show="showFirstDestinationVehicles">
-            <v-radio v-for="(vehicle, index) in vehicles" :key="index" :label="`${vehicle.name} (${vehicle.total_no})`" :value="vehicle.name"></v-radio>
+          <v-radio-group v-model="radioFirst">
+            <v-radio v-show="showFirstDestinationVehicles" v-for="(vehicle, index) in vehicles" :key="index" :label="`${vehicle.name} (${vehicle.total_no})`" :value="vehicle.name"></v-radio>
           </v-radio-group>
 
-        </v-flex>
+        </div>
 
         <!-- 2nd Destination -->
-        <v-flex mt-3>
-          <v-radio-group v-model="radioSecond" v-show="showSecondDestinationVehicles">
-            <v-radio v-for="(vehicle, index) in vehicles" :key="index" :label="`${vehicle.name} (${vehicle.total_no})`" :value="vehicle.name"></v-radio>
+        <div class="mt-2">
+          <v-radio-group v-model="radioSecond">
+            <v-radio v-show="showSecondDestinationVehicles" v-for="(vehicle, index) in vehicles" :key="index" :label="`${vehicle.name} (${vehicle.total_no})`" :value="vehicle.name"></v-radio>
           </v-radio-group>
-        </v-flex>
+        </div>
 
         <!-- 3rd Destination -->
-        <v-flex mt-3>
-          <v-radio-group v-model="radioThird" v-show="showThirdDestinationVehicles">
-            <v-radio v-for="(vehicle, index) in vehicles" :key="index" :label="`${vehicle.name} (${vehicle.total_no})`" :value="vehicle.name"></v-radio>
+        <div class="mt-2">
+          <v-radio-group v-model="radioThird">
+            <v-radio v-show="showThirdDestinationVehicles" v-for="(vehicle, index) in vehicles" :key="index" :label="`${vehicle.name} (${vehicle.total_no})`" :value="vehicle.name"></v-radio>
           </v-radio-group>
-        </v-flex>
+        </div>
 
         <!-- 4th Destination -->
 
-        <v-flex mt-3>
-          <v-radio-group v-model="radioFourth" v-show="showFourthDestinationVehicles">
-            <v-radio v-for="(vehicle, index) in vehicles" :key="index" :label="`${vehicle.name} (${vehicle.total_no})`" :value="vehicle.name"></v-radio>
+        <div class="mt-2">
+          <v-radio-group v-model="radioFourth">
+            <v-radio v-show="showFourthDestinationVehicles" v-for="(vehicle, index) in vehicles" :key="index" :label="`${vehicle.name} (${vehicle.total_no})`" :value="vehicle.name"></v-radio>
           </v-radio-group>
-        </v-flex>
+        </div>
+
       </v-flex>
 
       <div class="__find_falcon ">
@@ -277,8 +279,12 @@
     text-align: center;
   }
   .__vehicles_list {
-    margin-left: 23%;
-    margin-right: 20%;
+    margin-left: 19%;
+    display: inline-flex;
+    width: 100%;
+  }
+  .__vehicles_list > div {
+    margin-left: 3%;
   }
   .__result {
     font-size: 24px;

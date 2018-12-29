@@ -1,11 +1,11 @@
 <template>
     <v-app>
-        <Header/>
         <div id="app">
+            <Header/>
             <!-- View -->
             <router-view/>
+            <Footer/>
         </div>
-        <Footer/>
     </v-app>
 </template>
 
@@ -27,6 +27,14 @@
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
       color: #2c3e50;
-      min-height: 85%;
+    }
+    .footer {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      padding: 1rem;
+      background-color: #efefef;
+      text-align: center;
     }
 </style>
