@@ -33,15 +33,7 @@
 
       <div v-if="show" class="mt-4">
 
-        <span class="__select_destination">
-
-          <span v-for="(planet_name, index) in planet_names" :key="index" v-show="index < 4">
-
-            <v-autocomplete :disabled="selected_planet_names.length > 3" :items="items" flat :search-input.sync="search.dest + `${index+1}`" @change="selectDestination(index + 1, $event)" :label="`Select Destination` +  ` ${index+1}`" outline>
-            </v-autocomplete>
-
-          </span>
-        </span>
+        <Planets :allPlanets="planet_names" :selectedPlanetNames="selected_planet_names" :selectDestination="selectDestination" :search="search" :items="items" />
 
         <p class="text-sm-center mt-3" v-if="selected_planet_names.length > 3">
           Now Select the vehicles...you can't change the planet names now but you can always start fresh by resetting
@@ -94,6 +86,7 @@
 
 <script>
   import Result from './Result';
+  import Planets from './Planets';
   function initialState() {
     return {
       items: [],
@@ -130,7 +123,8 @@
     },
 
     components: {
-      Result
+      Result,
+      Planets
     },
 
     mounted() {
@@ -274,21 +268,6 @@
     margin-top: 1rem;
   }
 
-  .__select_destination {
-    margin-left: 20%;
-    display: inline-flex;
-  }
-
-  @media screen and (max-width: 40em) {
-    .__select_destination {
-      margin-left: 0%;
-      display: grid;
-    }
-  }
-
-  .__select_destination > span {
-    margin-left: 2% !important;
-  }
   .__find_falcon {
     margin-top: 3%;
     text-align: center;

@@ -1,0 +1,48 @@
+<template>
+  <span class="__select_destination">
+    <span v-for="(planet_name, index) in allPlanets" :key="index" v-show="index < 4">
+
+      <v-autocomplete :disabled="selectedPlanetNames.length > 3" :items="items" flat :search-input.sync="search.dest + `${index+1}`" @change="selectDestination(index + 1, $event)" :label="`Select Destination` +  ` ${index+1}`" outline>
+      </v-autocomplete>
+
+    </span>
+  </span>
+</template>
+
+<script>
+  export default {
+    props: {
+      allPlanets: {
+        type: Array
+      },
+      selectedPlanetNames: {
+        type: Array
+      },
+      selectDestination: {
+        type: Function
+      },
+      search: {
+        type: Object
+      },
+      items: {
+        type: Array
+      }
+    }
+  };
+</script>
+
+<style>
+  .__select_destination {
+    display: inline-flex;
+    margin-left: 20%;
+  }
+  .__select_destination > span {
+    margin-left: 2% !important;
+  }
+  @media screen and (max-width: 40em) {
+    .__select_destination {
+      margin-left: 0%;
+      display: grid;
+    }
+  }
+</style>
