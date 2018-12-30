@@ -1,12 +1,14 @@
 <template>
     <div>
 
+        <!--- error message -->
         <span v-if="error">
             <v-alert dismissible :value="true" type="error">
                 {{error}}, please reset and try again
             </v-alert>
         </span>
 
+        <!-- Not successful in finding falcone -->
         <span v-if="status === 'false'">
             <v-alert dismissible :value="true" type="error">
                 Not Successful, Please reset and try again in finding falcone
@@ -25,20 +27,28 @@
                 <v-progress-circular :size="70" :width="7" indeterminate color="primary"></v-progress-circular>
             </div>
 
+            <p class="text-sm-center mt-3" v-if="selected_planet_names.length < 4">
+                Please first select all the four destinations
+            </p>
+
+            <p class="text-sm-center mt-3" v-if="selected_planet_names.length > 3">
+                Now Select the vehicles...you can't change the planet names now but you can always start fresh by resetting
+            </p>
+
             <div v-if="show" class="__select_destination mt-4">
 
                 <span v-for="(planet_name, index) in planet_names" :key="index" v-show="index < 4">
 
-                    <v-autocomplete :items="items" flat :search-input.sync="search.dest + `${index+1}`" @change="selectDestination(index + 1, $event)" :label="`Select Destination` +  ` ${index+1}`" outline>
+                    <v-autocomplete :disabled="selected_planet_names.length > 3" :items="items" flat :search-input.sync="search.dest + `${index+1}`" @change="selectDestination(index + 1, $event)" :label="`Select Destination` +  ` ${index+1}`" outline>
                     </v-autocomplete>
 
                     <v-flex class="__vehicles_list">
 
                         <div class="mt-2">
 
-                            <v-radio-group v-model="form.radio[index]" v-show="index < selected_planet_names.length">
+                            <v-radio-group v-model="form.radio[index]" v-if="selected_planet_names.length > 3">
 
-                                <v-radio v-for="(vehicle, index) in vehicles" :key="index" @change="timeTaken(vehicle.max_distance, vehicle.speed)" :label="`${vehicle.name} (${vehicle.total_no})`" :value="vehicle.name" :disabled="vehicle.max_distance < planet_name.distance"></v-radio>
+                                <v-radio v-for="(vehicle, index) in vehicles" :key="index" @change="timeTaken(vehicle.max_distance, vehicle.speed)" :label="`${vehicle.name} (${vehicle.total_no})`" :value="vehicle.name" :disabled="vehicle.max_distance < selected_planet[index].distance"></v-radio>
 
                             </v-radio-group>
 
@@ -91,6 +101,7 @@
           dest4: null
         },
         current_selected_planet: null,
+        selected_planet: [],
         status: true, // API response status
         show: true,
         result: null,
@@ -205,7 +216,15 @@
               return item;
             }
           });
+
           this.current_selected_planet = planet;
+
+          this.planet_names.map(planet => {
+            if (this.current_selected_planet === planet.name) {
+              this.selected_planet.push(planet);
+            }
+          });
+
           if (this.prevIndex === index) {
             this.selected_planet_names.splice(-1, 1);
           }

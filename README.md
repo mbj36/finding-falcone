@@ -35,9 +35,3 @@ npm run serve
 - Axios
 - VueRouter
 - Vue-test-utils
-
-### Error Handling
-
-- If selected planets are less than 4, show error message
-
-![error](https://user-images.githubusercontent.com/9936881/50485016-767eea80-0a19-11e9-820e-d8a5faac085c.png)
