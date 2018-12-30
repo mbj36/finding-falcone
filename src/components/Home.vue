@@ -1,19 +1,7 @@
 <template>
   <div>
-
     <!--- error message -->
-    <span v-if="error">
-      <v-alert dismissible :value="true" type="error">
-        {{error}}, please reset and try again
-      </v-alert>
-    </span>
-
-    <!-- Not successful in finding falcone -->
-    <span v-if="status === 'false'">
-      <v-alert dismissible :value="true" type="error">
-        Falcone not found, Please reset and try again in finding falcone
-      </v-alert>
-    </span>
+    <Alert :error="error" :status="status" />
 
     <span v-if="!success">
       <h1 class="__header_title">Finding Falcone!</h1>
@@ -23,9 +11,7 @@
         <b>Time Taken - {{totalTimeTaken}} </b>
       </h3>
 
-      <div class="text-xs-center mt-5" v-show="loader">
-        <v-progress-circular :size="70" :width="7" indeterminate color="primary"></v-progress-circular>
-      </div>
+      <Progress :loader="loader" />
 
       <div v-if="show" class="mt-4">
 
@@ -53,6 +39,8 @@
   import Result from './Result';
   import Planets from './Planets';
   import Vehicle from './Vehicles';
+  import Alert from './Alert';
+  import Progress from './Progress';
   function initialState() {
     return {
       items: [],
@@ -91,7 +79,9 @@
     components: {
       Result,
       Planets,
-      Vehicle
+      Vehicle,
+      Alert,
+      Progress
     },
 
     mounted() {
