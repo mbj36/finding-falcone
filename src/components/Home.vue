@@ -27,46 +27,11 @@
         <v-progress-circular :size="70" :width="7" indeterminate color="primary"></v-progress-circular>
       </div>
 
-      <p class="text-sm-center mt-3" v-if="selected_planet_names.length < 4">
-        Please first select all the four destinations
-      </p>
-
       <div v-if="show" class="mt-4">
 
         <Planets :allPlanets="planet_names" :selectedPlanetNames="selected_planet_names" :selectDestination="selectDestination" :search="search" :items="items" />
 
-        <p class="text-sm-center mt-3" v-if="selected_planet_names.length > 3">
-          Now Select the vehicles...you can't change the planet names now but you can always start fresh by resetting
-        </p>
-
-        <div class="mt-2 d-flex __vehicles_list" v-if="selected_planet_names.length > 3">
-
-          <v-radio-group v-model="form.radio[0]">
-
-            <v-radio v-for="(vehicle, index) in vehicles" :key="index" @change="timeTaken(vehicle.max_distance, vehicle.speed)" :disabled="vehicle.max_distance < selected_planet[0].distance" :label="`${vehicle.name} (${vehicle.total_no})`" :value="vehicle.name"></v-radio>
-
-          </v-radio-group>
-
-          <v-radio-group v-model="form.radio[1]">
-
-            <v-radio v-for="(vehicle, index) in vehicles" :key="index" @change="timeTaken(vehicle.max_distance, vehicle.speed)" :disabled="vehicle.max_distance < selected_planet[1].distance" :label="`${vehicle.name} (${vehicle.total_no})`" :value="vehicle.name"></v-radio>
-
-          </v-radio-group>
-
-          <v-radio-group v-model="form.radio[2]">
-
-            <v-radio v-for="(vehicle, index) in vehicles" :key="index" @change="timeTaken(vehicle.max_distance, vehicle.speed)" :disabled="vehicle.max_distance < selected_planet[2].distance" :label="`${vehicle.name} (${vehicle.total_no})`" :value="vehicle.name"></v-radio>
-
-          </v-radio-group>
-
-          <v-radio-group v-model="form.radio[3]">
-
-            <v-radio v-for="(vehicle, index) in vehicles" :key="index" @change="timeTaken(vehicle.max_distance, vehicle.speed)" :disabled="vehicle.max_distance < selected_planet[3].distance" :label="`${vehicle.name} (${vehicle.total_no})`" :value="vehicle.name"></v-radio>
-
-          </v-radio-group>
-        </div>
-
-      </div>
+        <Vehicle :form="form" :selectedPlanetNames="selected_planet_names" :vehicles="vehicles" :selectedPlanet="selected_planet" :timeTaken="timeTaken" /> </div>
 
       <div class="__find_falcon ">
         <v-btn @click="findFalcon" v-show="selected_planet_names.length > 3" dark>Find Falcon</v-btn>
@@ -87,6 +52,7 @@
 <script>
   import Result from './Result';
   import Planets from './Planets';
+  import Vehicle from './Vehicles';
   function initialState() {
     return {
       items: [],
@@ -124,7 +90,8 @@
 
     components: {
       Result,
-      Planets
+      Planets,
+      Vehicle
     },
 
     mounted() {
