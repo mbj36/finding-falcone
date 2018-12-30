@@ -269,6 +269,13 @@
       display: inline-flex;
     }
 
+    @media screen and (max-width: 40em) {
+      .__select_destination {
+        margin-left: 0%;
+        display: grid;
+      }
+    }
+
     .__select_destination > span {
       margin-left: 2% !important;
     }
