@@ -35,27 +35,44 @@
                 Now Select the vehicles...you can't change the planet names now but you can always start fresh by resetting
             </p>
 
-            <div v-if="show" class="__select_destination mt-4">
+            <div v-if="show" class="mt-4">
 
-                <span v-for="(planet_name, index) in planet_names" :key="index" v-show="index < 4">
+                <span class="__select_destination">
 
-                    <v-autocomplete :disabled="selected_planet_names.length > 3" :items="items" flat :search-input.sync="search.dest + `${index+1}`" @change="selectDestination(index + 1, $event)" :label="`Select Destination` +  ` ${index+1}`" outline>
-                    </v-autocomplete>
+                    <span v-for="(planet_name, index) in planet_names" :key="index" v-show="index < 4">
 
-                    <v-flex class="__vehicles_list">
+                        <v-autocomplete :disabled="selected_planet_names.length > 3" :items="items" flat :search-input.sync="search.dest + `${index+1}`" @change="selectDestination(index + 1, $event)" :label="`Select Destination` +  ` ${index+1}`" outline>
+                        </v-autocomplete>
 
-                        <div class="mt-2">
-
-                            <v-radio-group v-model="form.radio[index]" v-if="selected_planet_names.length > 3">
-
-                                <v-radio v-for="(vehicle, index) in vehicles" :key="index" @change="timeTaken(vehicle.max_distance, vehicle.speed)" :label="`${vehicle.name} (${vehicle.total_no})`" :value="vehicle.name" :disabled="vehicle.max_distance < selected_planet[index].distance"></v-radio>
-
-                            </v-radio-group>
-
-                        </div>
-
-                    </v-flex>
+                    </span>
                 </span>
+
+                <div class="mt-2 d-flex __vehicles_list" v-if="selected_planet_names.length > 3">
+
+                    <v-radio-group v-model="form.radio[0]">
+
+                        <v-radio v-for="(vehicle, index) in vehicles" :key="index" @change="timeTaken(vehicle.max_distance, vehicle.speed)" :disabled="vehicle.max_distance < selected_planet[0].distance" :label="`${vehicle.name} (${vehicle.total_no})`" :value="vehicle.name"></v-radio>
+
+                    </v-radio-group>
+
+                    <v-radio-group v-model="form.radio[1]">
+
+                        <v-radio v-for="(vehicle, index) in vehicles" :key="index" @change="timeTaken(vehicle.max_distance, vehicle.speed)" :disabled="vehicle.max_distance < selected_planet[1].distance" :label="`${vehicle.name} (${vehicle.total_no})`" :value="vehicle.name"></v-radio>
+
+                    </v-radio-group>
+
+                    <v-radio-group v-model="form.radio[2]">
+
+                        <v-radio v-for="(vehicle, index) in vehicles" :key="index" @change="timeTaken(vehicle.max_distance, vehicle.speed)" :disabled="vehicle.max_distance < selected_planet[2].distance" :label="`${vehicle.name} (${vehicle.total_no})`" :value="vehicle.name"></v-radio>
+
+                    </v-radio-group>
+
+                    <v-radio-group v-model="form.radio[3]">
+
+                        <v-radio v-for="(vehicle, index) in vehicles" :key="index" @change="timeTaken(vehicle.max_distance, vehicle.speed)" :disabled="vehicle.max_distance < selected_planet[3].distance" :label="`${vehicle.name} (${vehicle.total_no})`" :value="vehicle.name"></v-radio>
+
+                    </v-radio-group>
+                </div>
 
             </div>
 
@@ -284,9 +301,14 @@
       text-align: center;
     }
     .__vehicles_list {
-      margin-left: 5%;
-      display: inline-flex;
-      width: 100%;
+      width: 60%;
+      margin-left: 23%;
+    }
+    @media screen and (max-width: 40em) {
+      .__vehicles_list {
+        width: 100%;
+        margin-left: 0%;
+      }
     }
     .__result {
       font-size: 24px;
