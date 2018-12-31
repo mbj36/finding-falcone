@@ -65,6 +65,7 @@
       form: {
         radio: []
       },
+      obj: null,
       loader: true, // initial loader
       error: null, // to show error message based on conditions
       prevIndex: '' // used to check before pushing into the selected_items array
@@ -94,8 +95,17 @@
     },
 
     methods: {
-      timeTaken(d, s) {
-        this.totalTimeTaken = this.totalTimeTaken + d / s;
+      timeTaken(d, s, n) {
+        this.obj = {
+          ...this.obj,
+          [n]: d / s
+        };
+
+        let values = Object.values(this.obj);
+
+        let sum = values.reduce((a, b) => a + b, 0);
+
+        this.totalTimeTaken = sum;
       },
       getPlanets() {
         this.$http.get('/planets').then(res => {

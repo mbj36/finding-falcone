@@ -7,25 +7,25 @@
 
             <v-radio-group v-model="form.radio[0]">
 
-                <v-radio v-for="(vehicle, index) in vehicles" :key="index" @change="timeTaken(vehicle.max_distance, vehicle.speed)" :disabled="vehicle.max_distance < selectedPlanet[0].distance" :label="`${vehicle.name} (${vehicle.total_no})`" :value="vehicle.name"></v-radio>
+                <v-radio v-for="(vehicle, index) in vehicles" :key="index" @change="timeTaken(vehicle.max_distance, vehicle.speed, 1)" :disabled="vehicle.max_distance < selectedPlanet[0].distance" :label="`${vehicle.name} (${vehicle.total_no})`" :value="vehicle.name"></v-radio>
 
             </v-radio-group>
 
             <v-radio-group v-model="form.radio[1]">
 
-                <v-radio v-for="(vehicle, index) in vehicles" :key="index" @change="timeTaken(vehicle.max_distance, vehicle.speed)" :disabled="vehicle.max_distance < selectedPlanet[1].distance" :label="`${vehicle.name} (${vehicle.total_no})`" :value="vehicle.name"></v-radio>
+                <v-radio v-for="(vehicle, index) in vehicles" :key="index" @change="timeTaken(vehicle.max_distance, vehicle.speed, 2)" :disabled="vehicle.max_distance < selectedPlanet[1].distance" :label="`${vehicle.name} (${vehicle.total_no})`" :value="vehicle.name"></v-radio>
 
             </v-radio-group>
 
             <v-radio-group v-model="form.radio[2]">
 
-                <v-radio v-for="(vehicle, index) in vehicles" :key="index" @change="timeTaken(vehicle.max_distance, vehicle.speed)" :disabled="vehicle.max_distance < selectedPlanet[2].distance" :label="`${vehicle.name} (${vehicle.total_no})`" :value="vehicle.name"></v-radio>
+                <v-radio v-for="(vehicle, index) in vehicles" :key="index" @change="timeTaken(vehicle.max_distance, vehicle.speed, 3)" :disabled="vehicle.max_distance < selectedPlanet[2].distance" :label="`${vehicle.name} (${vehicle.total_no})`" :value="vehicle.name"></v-radio>
 
             </v-radio-group>
 
             <v-radio-group v-model="form.radio[3]">
 
-                <v-radio v-for="(vehicle, index) in vehicles" :key="index" @change="timeTaken(vehicle.max_distance, vehicle.speed)" :disabled="vehicle.max_distance < selectedPlanet[3].distance" :label="`${vehicle.name} (${vehicle.total_no})`" :value="vehicle.name"></v-radio>
+                <v-radio v-for="(vehicle, index) in vehicles" :key="index" @change="timeTaken(vehicle.max_distance, vehicle.speed, 4)" :disabled="vehicle.max_distance < selectedPlanet[3].distance" :label="`${vehicle.name} (${vehicle.total_no})`" :value="vehicle.name"></v-radio>
 
             </v-radio-group>
         </div>
