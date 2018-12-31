@@ -13,11 +13,13 @@
 
       <Progress :loader="loader" />
 
-      <div v-if="show" class="mt-4">
+      <div v-if="show" class="mt-4 __show_destination">
 
         <Planets :allPlanets="planet_names" :selectedPlanetNames="selected_planet_names" :selectDestination="selectDestination" :search="search" :items="items" />
 
-        <Vehicle :form="form" :selectedPlanetNames="selected_planet_names" :vehicles="vehicles" :selectedPlanet="selected_planet" :timeTaken="timeTaken" /> </div>
+        <Vehicle :form="form" :selectedPlanetNames="selected_planet_names" :vehicles="vehicles" :selectedPlanet="selected_planet" :timeTaken="timeTaken" />
+
+      </div>
 
       <div class="__find_falcon ">
         <v-btn @click="findFalcon" v-show="selected_planet_names.length > 3" dark>Find Falcon</v-btn>
@@ -95,10 +97,10 @@
     },
 
     methods: {
-      timeTaken(d, s, n) {
+      timeTaken(distance, speed, n) {
         this.obj = {
           ...this.obj,
-          [n]: d / s
+          [n]: distance / speed
         };
 
         let values = Object.values(this.obj);

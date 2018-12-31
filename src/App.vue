@@ -4,8 +4,8 @@
             <Header/>
             <!-- View -->
             <router-view/>
-            <Footer/>
         </div>
+        <Footer/>
     </v-app>
 </template>
 
@@ -53,13 +53,20 @@
       text-align: center;
     }
     .__vehicles_list {
-      width: 60%;
-      margin-left: 23%;
+      display: inline-flex;
+      margin-left: 5%;
+      width: 65%;
+    }
+    .__vehicles_list > div {
+      justify-content: space-between;
     }
     @media screen and (max-width: 40em) {
       .__vehicles_list {
         width: 100%;
         margin-left: 0%;
       }
+    }
+    .__show_destination {
+      text-align: center;
     }
 </style>

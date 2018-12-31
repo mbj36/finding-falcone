@@ -40,10 +40,9 @@
 <style>
   .__select_destination {
     display: inline-flex;
-    margin-left: 20%;
   }
   .__select_destination > span {
-    margin-left: 2% !important;
+    margin-left: 1% !important;
   }
   @media screen and (max-width: 40em) {
     .__select_destination {

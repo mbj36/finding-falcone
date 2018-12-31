@@ -1,9 +1,9 @@
 <template>
     <span>
         <p class="text-sm-center mt-3" v-if="selectedPlanetNames.length > 3">
-            Now Select the vehicles...you can't change the planet names now but you can always start fresh by resetting
+            Now Select the vehicles for each planet...you can't change the planet names now but you can always start fresh by resetting
         </p>
-        <div class="mt-2 d-flex __vehicles_list" v-if="selectedPlanetNames.length > 3">
+        <div class="__vehicles_list" v-if="selectedPlanetNames.length > 3">
 
             <v-radio-group v-model="form.radio[0]">
 
