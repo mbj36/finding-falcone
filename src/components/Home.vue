@@ -223,30 +223,4 @@
   };
 </script>
 
-<style>
-  .__header_title {
-    font-size: 3rem;
-    text-align: center;
-    margin-top: 3rem;
-  }
 
-  .__select_planet {
-    text-align: center;
-    margin-top: 1rem;
-  }
-
-  .__find_falcon {
-    margin-top: 3%;
-    text-align: center;
-  }
-  .__vehicles_list {
-    width: 60%;
-    margin-left: 23%;
-  }
-  @media screen and (max-width: 40em) {
-    .__vehicles_list {
-      width: 100%;
-      margin-left: 0%;
-    }
-  }
-</style>
