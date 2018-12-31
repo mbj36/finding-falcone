@@ -14,6 +14,8 @@ npm run serve
 
 ### Problem Statement
 
+Full Problem Detail - [Here](https://drive.google.com/file/d/1hdosmDX9r2m0lvwoLxtDB5LarIN3KjnA/view?usp=sharing)
+
 - You need to build a UI through which King Shan can
   select 4 planets to search (out of the total 6)
   select which space vehicles to send to these planets
