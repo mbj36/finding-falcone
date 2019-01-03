@@ -11,12 +11,15 @@
         <b>Time Taken - {{totalTimeTaken}} </b>
       </h3>
 
+      <!-- Progress Loader before items has been loaded -->
       <Progress :loader="loader" />
 
       <div v-if="show" class="mt-4 __show_destination">
 
+        <!-- All planets dropdown -->
         <Planets :allPlanets="planet_names" :selectedPlanetNames="selected_planet_names" :selectDestination="selectDestination" :search="search" :items="items" />
 
+        <!-- All vehicles after planets has been selected -->
         <Vehicle :form="form" :selectedPlanetNames="selected_planet_names" :vehicles="vehicles" :selectedPlanet="selected_planet" :timeTaken="timeTaken" />
 
       </div>
@@ -43,6 +46,7 @@
   import Vehicle from './Vehicles';
   import Alert from './Alert';
   import Progress from './Progress';
+
   function initialState() {
     return {
       items: [],
@@ -80,6 +84,7 @@
     },
 
     components: {
+      // Component Registration
       Result,
       Planets,
       Vehicle,
@@ -109,6 +114,7 @@
 
         this.totalTimeTaken = sum;
       },
+
       getPlanets() {
         this.$http.get('/planets').then(res => {
           this.planet_names = res.data;
@@ -137,7 +143,7 @@
             {},
             {
               headers: {
-                Accept: 'application/json'
+                Accept: 'application/json' // Necessary header for using API
               }
             }
           )
