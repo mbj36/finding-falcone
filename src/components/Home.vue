@@ -148,33 +148,50 @@
 
       findFalcon() {
         this.selected_vehicle_names = this.form.radio;
-        this.$http
-          .post(
-            '/find',
-            {
-              token: this.token,
-              planet_names: this.selected_planet_names,
-              vehicle_names: this.selected_vehicle_names
-            },
-            {
-              headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json'
+
+        let counts = {};
+
+        for (let i = 0; i < this.selected_vehicle_names.length; i++) {
+          let num = this.selected_vehicle_names[i];
+          counts[num] = counts[num] ? counts[num] + 1 : 1;
+        }
+        if (
+          counts['Space pod'] > 2 ||
+          counts['Space rocket'] > 1 ||
+          counts['Space shuttle'] > 1 ||
+          counts['Space ship'] > 2
+        ) {
+          this.error =
+            'There are only 2 Space Pods, 2 Space Ship, 1 Space rocket and 1 Space Shuttle available, You have exceeded the amount';
+        } else {
+          this.$http
+            .post(
+              '/find',
+              {
+                token: this.token,
+                planet_names: this.selected_planet_names,
+                vehicle_names: this.selected_vehicle_names
+              },
+              {
+                headers: {
+                  Accept: 'application/json',
+                  'Content-Type': 'application/json'
+                }
               }
-            }
-          )
-          .then(res => {
-            this.result = res.data;
-            this.status = res.data.status;
-            if (res.data.status !== 'false') {
-              this.success = true;
-              this.selected_planet_names = [];
-              this.selected_vehicle_names = [];
-            }
-          })
-          .catch(error => {
-            this.error = error.response.data.error;
-          });
+            )
+            .then(res => {
+              this.result = res.data;
+              this.status = res.data.status;
+              if (res.data.status !== 'false') {
+                this.success = true;
+                this.selected_planet_names = [];
+                this.selected_vehicle_names = [];
+              }
+            })
+            .catch(error => {
+              this.error = error.response.data.error;
+            });
+        }
       },
 
       selectDestination(index, planet) {
